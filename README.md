@@ -1,16 +1,19 @@
 # Identity Vault
 
-This is the Rails codebase powering https://identity.hackclub.com!
+This is Not the Rails codebase powering https://identity.hackclub.com!
+
+This repository aims to be a proof-of-concept for an integration of Identity Vault with Canada Post's Identity+ service. It will likely never make it upstream, but where's the harm 
 
 ## contributing:
-poke [nora](https://hackclub.slack.com/team/U06QK6AG3RD)!
+poke [annabel](https://hackclub.slack.com/team/U078HNSV750)!
 avoid questions that can be answered by reading the source code, but otherwise i'd be happy to help you get up to speed :-D
 
 kindly `bin/lint` your code before you submit it!
 ### areas of focus:
-the ops view components (look in `app/components`) are a hot mess...
+i think this is very self explanitory. i don't like hack club keeping my ID indefinitely, so imma fix it.
+first up - integration with canada post's identity+ service, which lets me get verified at a local post office.
 
-so is the onboarding controller, she should really be ripped out and replaced.
+hopefully, i'll be able to work in the new digital credentials api as well, but i'll likely forget about this fork in 3-5 business days.
 
 ## dev setup:
 - make sure you have working installations of ruby ≥ 3.4.4 & nodejs
