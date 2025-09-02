@@ -17,6 +17,7 @@ hopefully, i'll be able to work in the new digital credentials api as well, but 
 
 ## dev setup:
 - make sure you have working installations of ruby ≥ 3.4.4 & nodejs
+- on windows, make sure you're working under msys2. otherwise, you'll find yourself in dependency hell.
 - clone repo
 - create .env.development, populate `DATABASE_URL` w/ a local postgres instance
 - run `bundle install`
