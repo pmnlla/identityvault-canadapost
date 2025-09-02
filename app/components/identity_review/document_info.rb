@@ -33,6 +33,10 @@ class Components::IdentityReview::DocumentInfo < Components::Base
           td(style: "font-weight: bold; padding: 0.25rem 0;") { "Files:" }
           td(style: "padding: 0.25rem 0;") { @verification.identity_document.files.count }
         end
+        tr do
+          td(style: "font-weight: bold; padding: 0.25rem 0;") { "Standalone:" }
+          td(style: "padding: 0.25rem 0;") { @verification.identity_document.standalone_value }
+        end
       end
     end
   end

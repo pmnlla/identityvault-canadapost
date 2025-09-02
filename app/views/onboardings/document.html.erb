@@ -1,3 +1,4 @@
+<% prefill = session.dig(:stashed_data, "prefill") || {} %>
 <% if @is_resubmission %>
   <h1>Document Resubmission Required</h1>
   <div class="banner warning">
@@ -55,7 +56,7 @@
 <% end %>
 <%= form_with model: @document, url: document_onboarding_path, method: :post, local: true, multipart: true,
               html: {
-                "x-data" => "{ selectedType: '#{ @document.document_type }', transcriptFileCount: 0, studentIdFileCount: 0, governmentIdFileCount: 0, get canSubmit() { return this.selectedType === 'transcript' ? (this.transcriptFileCount >= 1 && this.studentIdFileCount >= 1) : this.governmentIdFileCount >= 1; }, submitted: false }"
+                "x-data" => "{ selectedType: '#{ @document.document_type }', transcriptFileCount: 0, studentIdFileCount: 0, governmentIdFileCount: 0, canadaPostIdentityLength: 0, get canSubmit() { return this.selectedType === 'transcript' ? (this.transcriptFileCount >= 1 && this.studentIdFileCount >= 1) : (this.selectedType === 'canadapost' ? this.canadaPostIdentityLength >= 3 : this.governmentIdFileCount >= 1); }, submitted: false }"
               } do |form| %>
   <%= form.label :document_type, "Document type:" %>
   <%= form.select :document_type,
@@ -82,6 +83,12 @@
     <div class="upload-section">
       <%= label_tag "identity_document_files", "Upload your student ID:" %>
       <%= file_field_tag "identity_document[files][]", :required => false, :accept => (@identity.country == "IN" ? ".pdf" : "image/*,.pdf,.heic,.heif"), "x-on:change" => 'studentIdFileCount = $event.target.files.length' %>
+    </div>
+  </div>
+    <div x-show="selectedType === 'canadapost'" x-transition x-cloak>
+    <div class="upload-section">
+      <%= label_tag "identity_document_files", "Your Identity+ number:" %>
+      <%= form.text_field :standalone_value, :placeholder => "Canada Post Identity+ Number", :required => false, "x-on:input": "canadaPostIdentityLength = $event.target.value.length"%>
     </div>
   </div>
   <div x-cloak x-show="submitted">

@@ -26,26 +26,29 @@ class Identity::Document < ApplicationRecord
   has_many_attached :files
   has_many :break_glass_records, as: :break_glassable, class_name: "BreakGlassRecord", dependent: :destroy
 
+
   TRANSCRIPT_COUNTRIES = %w[US AU CA SG]
 
   enum :document_type, {
          government_id: 0,
-         transcript: 1
+         transcript: 1,
+         canadapost: 2
        }
 
   FRIENDLY_NAMES = {
     government_id: "Government-issued ID",
-    transcript: "Transcript & Student ID"
+    transcript: "Transcript & Student ID",
+    canadapost: "Canada Post Identity+ Number"
   }
 
   validates :document_type, presence: true
-  validates :files, presence: true, on: :create
   validate :correct_number_of_files, on: :create
   validate :file_size_and_type
+  validate :standalone_value
 
   def self.selectable_types_for_country(country)
     if TRANSCRIPT_COUNTRIES.include?(country)
-      %i[transcript government_id]
+      %i[transcript government_id canadapost]
     else
       %i[government_id]
     end
@@ -80,7 +83,7 @@ class Identity::Document < ApplicationRecord
   def correct_number_of_files
     return unless files.attached?
 
-    required_count = transcript? ? 2 : 1
+    required_count = transcript? ? 2 : (candapost ? 0 : 1)
     actual_count = files.count
 
     if actual_count != required_count
